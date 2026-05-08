@@ -1,0 +1,16 @@
+# Spring Boot application configuration
+spring:
+    application:
+        name: saas-app
+    config:
+        import: optional:file:.env[.properties]
+    profiles:
+        active: ${SPRING_PROFILES_ACTIVE:dev}
+
+# openapi configuration
+springdoc:
+    default-produces-media-type: application/json
+    swagger-ui:
+        enabled: true
+        operations-sorter: true
+        tags-sorter: alpha
