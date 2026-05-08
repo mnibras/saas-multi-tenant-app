@@ -35,7 +35,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void update(final String id, final CategoryRequest request) {
-        // check if category already exists by ID
         final Optional<Category> existingCategory = categoryRepository.findById(id);
         if (existingCategory.isEmpty()) {
             log.debug("Category does not exist with id '{}'", id);
