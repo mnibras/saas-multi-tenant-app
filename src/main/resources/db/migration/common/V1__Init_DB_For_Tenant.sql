@@ -7,6 +7,7 @@ create table public.category
     updated_at  timestamp(6),
     updated_by  varchar(255),
     description text,
+    tenant_id   varchar(255),
     name        varchar(255) not null
         constraint category_name_unique_constraint unique
 );
@@ -23,6 +24,7 @@ create table public.product
     description     text,
     name            varchar(255)   not null,
     price           numeric(38, 2) not null,
+    tenant_id       varchar(255),
     reference       varchar(255)   not null
         constraint product_reference_unique_constraint unique,
     category_id     varchar(255)
@@ -41,8 +43,10 @@ create table public.stock_movement
     comment    text,
     date       date         not null,
     quantity   integer      not null,
+    tenant_id  varchar(255),
     type       varchar(255) not null
         constraint stock_movement_type_mvt_check
-            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[])),
+            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[])
+) ,
     product_id varchar(255) constraint fk_product_id references product
 );
