@@ -4,6 +4,7 @@ import com.nibras.saas.common.PageResponse;
 import com.nibras.saas.dto.request.CategoryRequest;
 import com.nibras.saas.dto.response.CategoryResponse;
 import com.nibras.saas.entity.Category;
+import com.nibras.saas.exception.DuplicateResourceException;
 import com.nibras.saas.mapper.CategoryMapper;
 import com.nibras.saas.repository.CategoryRepository;
 import com.nibras.saas.service.CategoryService;
@@ -76,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
         final Optional<Category> optionalCategory = categoryRepository.findByNameIgnoreCase(name);
         if (optionalCategory.isPresent()) {
             log.debug("Category with name '{}' already exists", name);
-            throw new EntityNotFoundException("Category with name '" + name + "' already exists");
+            throw new DuplicateResourceException("Category with name '" + name + "' already exists");
         }
     }
 }

@@ -20,7 +20,6 @@ public class TenantResponse {
     private String adminFullName;
     private String adminEmail;
     private String adminUsername;
-    private String adminPassword;
     private LocalDateTime createdAt;
     private TenantStatus status;
 
