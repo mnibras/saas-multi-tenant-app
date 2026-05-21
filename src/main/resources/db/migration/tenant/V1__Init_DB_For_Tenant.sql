@@ -44,8 +44,8 @@ create table stock_movement
     date       date         not null,
     quantity   integer      not null,
     tenant_id  varchar(255),
-    product_id varchar(255)
-        constraint fk_product_id references product type       varchar(255) not null
+    product_id varchar(255) constraint fk_product_id references product,
+    type       varchar(255) not null
         constraint stock_movement_type_mvt_check
-            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[])),
+            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[]))
 );

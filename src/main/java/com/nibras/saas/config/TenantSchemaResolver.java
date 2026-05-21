@@ -21,7 +21,7 @@ public class TenantSchemaResolver {
         }
 
         try {
-            String sql = "SELECT company_code FROM public.tenants WHERE id = ? AND deleted = false";
+            String sql = "SELECT company_code FROM public.tenant WHERE id = ? AND deleted = false";
             final String companyCode = this.jdbcTemplate.queryForObject(sql, String.class, tenantId);
             if (companyCode != null) {
                 final String schemaName = "tenant_" + companyCode.toLowerCase();

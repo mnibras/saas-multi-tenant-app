@@ -133,6 +133,7 @@ public class TenantServiceImpl implements TenantService {
                 .password(tenant.getAdminPassword()) // already hashed when register tenant
                 .role(UserRole.ROLE_COMPANY_ADMIN)
                 .tenant(tenant)
+                .enabled(true)
                 .deleted(false)
                 .build();
 

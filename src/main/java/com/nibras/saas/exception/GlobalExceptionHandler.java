@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -96,6 +97,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(UNAUTHORIZED)
                 .body(errorResponse);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleException(final AuthorizationDeniedException ex) {
+        log.debug(ex.getMessage(), ex);
+        final ErrorResponse response = ErrorResponse.builder()
+                .code("USER_NOT_AUTHORIZED")
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(response, UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
