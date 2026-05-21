@@ -5,6 +5,7 @@ import com.nibras.saas.dto.request.ProductRequest;
 import com.nibras.saas.dto.response.ProductResponse;
 import com.nibras.saas.entity.Category;
 import com.nibras.saas.entity.Product;
+import com.nibras.saas.exception.DuplicateResourceException;
 import com.nibras.saas.mapper.ProductMapper;
 import com.nibras.saas.repository.CategoryRepository;
 import com.nibras.saas.repository.ProductRepository;
@@ -82,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
         final Optional<Product> product = this.productRepository.findByReferenceIgnoreCase(reference);
         if (product.isPresent()) {
             log.debug("Product already exists with reference '{}'", reference);
-            throw new RuntimeException("Product already exists with reference '" + reference + "'");
+            throw new DuplicateResourceException("Product already exists with reference '" + reference + "'");
         }
     }
 

@@ -1,4 +1,4 @@
-create table public.category
+create table category
 (
     id          varchar(255) not null primary key,
     created_at  timestamp(6) not null,
@@ -12,7 +12,7 @@ create table public.category
         constraint category_name_unique_constraint unique
 );
 
-create table public.product
+create table product
 (
     id              varchar(255)   not null primary key,
     created_at      timestamp(6)   not null,
@@ -32,7 +32,7 @@ create table public.product
 );
 
 
-create table public.stock_movement
+create table stock_movement
 (
     id         varchar(255) not null primary key,
     created_at timestamp(6) not null,
@@ -44,9 +44,8 @@ create table public.stock_movement
     date       date         not null,
     quantity   integer      not null,
     tenant_id  varchar(255),
+    product_id varchar(255) constraint fk_product_id references product,
     type       varchar(255) not null
         constraint stock_movement_type_mvt_check
-            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[])
-) ,
-    product_id varchar(255) constraint fk_product_id references product
+            check ((type)::text = ANY ((ARRAY ['IN':: character varying, 'OUT':: character varying])::text[]))
 );
