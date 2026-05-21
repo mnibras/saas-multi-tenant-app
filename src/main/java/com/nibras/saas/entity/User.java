@@ -22,7 +22,7 @@ import static jakarta.persistence.EnumType.STRING;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends AbstractEntity implements UserDetails {
 
     @ManyToOne(fetch = FetchType.LAZY)

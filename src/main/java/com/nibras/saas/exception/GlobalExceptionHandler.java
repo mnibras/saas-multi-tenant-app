@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 @Slf4j
@@ -44,6 +48,15 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ErrorResponse> handleBusiness(final DisabledException ex) {
+        final ErrorResponse body = ErrorResponse.builder()
+                .code("USER_DISABLED")
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(UNAUTHORIZED).body(body);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -81,17 +94,27 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity.status(UNAUTHORIZED)
                 .body(errorResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(final Exception ex) {
+        log.error(ex.getMessage(), ex);
+        final ErrorResponse response = ErrorResponse.builder()
+                .code("INTERNAL_EXCEPTION")
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(response, INTERNAL_SERVER_ERROR);
     }
 
     private HttpStatus getHttpStatus(final BusinessException ex) {
         if (ex instanceof DuplicateResourceException) {
             return HttpStatus.CONFLICT;
         } else if (ex instanceof UnauthorizedException) {
-            return HttpStatus.UNAUTHORIZED;
+            return UNAUTHORIZED;
         } else if (ex instanceof TenantProvisioningException) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return INTERNAL_SERVER_ERROR;
         } else if (ex instanceof InvalidRequestException) {
             return HttpStatus.BAD_REQUEST;
         }

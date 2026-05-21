@@ -11,6 +11,8 @@ create table tenant
     deleted         boolean      not null,
     created_at      timestamp(6) not null,
     updated_at      timestamp(6),
+    created_by varchar(255) not null,
+    updated_by varchar(255),
     status          varchar(255) not null,
         constraint tenants_status_check
             check ((status)::text = ANY
