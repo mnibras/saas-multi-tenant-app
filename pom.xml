@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nibras</groupId>
-    <artifactId>saas-multi-tenant-app</artifactId>
+    <artifactId>saas-multi-tenant-app-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>saas-multi-tenant-app</name>
-    <description>saas-multi-tenant-app</description>
+    <name>saas-multi-tenant-app-api</name>
+    <description>saas-multi-tenant-app-api</description>
     <url/>
     <licenses>
         <license/>
